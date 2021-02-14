@@ -24,37 +24,50 @@ const showImages = (images) => {
     let div = document.createElement('div');
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
-    gallery.appendChild(div)
+    gallery.appendChild(div);
   })
+  toggleSpinner();
 
 }
 
 const getImages = (query) => {
+    toggleSpinner();
+    dangerInfo(false);
+    
+    imagesArea.style.display = 'none';
+    const url = (`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`);
 
-  const url = (`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
-  console.log(url);
-    fetch(url)
+  fetch(url)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
-      showImages(data.hits);
-       
+      if ((data.hits).length > 0) {
+
+        showImages(data.hits);
+      }
+      else {
+        imagesArea.style.display = 'none';
+        dangerInfo(true);
+        toggleSpinner();
+
+      }
+
+
 
     })
-    .catch(err => console.log(err))
+    .catch(err => dangerInfo(true))
 }
 
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-   element.classList.add('added');
+  element.classList.add('added');
 
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
   } else {
     // sliders.pop(img);
-    sliders.splice(item, 1); 
+    sliders.splice(item, 1);
     element.classList.toggle("added");
   }
 }
@@ -79,11 +92,9 @@ const createSlider = () => {
   // hide image aria
   imagesArea.style.display = 'none';
   let duration = document.getElementById('duration').value || 1000;
-  console.log(duration);
-  console.log(typeof duration);
-  if(duration <= 400){
+  if (duration <= 400) {
     duration = 1000;
-    if(confirm("slide duration will set to 1s default")){
+    if (confirm("slider duration will set to 1s default")) {
       sliders.forEach(slide => {
         let item = document.createElement('div')
         item.className = "slider-item";
@@ -99,14 +110,14 @@ const createSlider = () => {
       }, duration);
 
     }
-    else{
+    else {
       imagesArea.style.display = 'block';
-      
+
     }
 
   }
 
-  else{
+  else {
 
     sliders.forEach(slide => {
       let item = document.createElement('div')
@@ -123,7 +134,7 @@ const createSlider = () => {
     }, duration);
 
   }
- 
+
 }
 
 // change slider index 
@@ -152,7 +163,7 @@ const changeSlide = (index) => {
   items[index].style.display = "block"
 }
 
-function getInputValue(){
+function getInputValue() {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   const search = document.getElementById('search');
@@ -160,15 +171,32 @@ function getInputValue(){
   sliders.length = 0;
 }
 
-const triggerSearchBtn = inputField.addEventListener('keypress',function(event){
-  
-    if (event.key === 'Enter'){
-      console.log(event.key);
-      getInputValue();
-    }
-    
+const triggerSearchBtn = inputField.addEventListener('keypress', function (event) {
+
+  if (event.key === 'Enter') {
+    getInputValue();
+  }
+
 })
 
 sliderBtn.addEventListener('click', function () {
   createSlider()
 })
+
+//Bonus Marking javascript
+const toggleSpinner = () => {
+  const spinner = document.getElementById('spinner');
+    spinner.classList.toggle('d-flex');
+}
+
+const dangerInfo = (show) => {
+  const error = document.getElementById('error');
+
+ if (show) {
+    error.classList.add('d-flex');
+  }
+  else {
+    error.classList.remove('d-flex');
+  }
+ 
+}

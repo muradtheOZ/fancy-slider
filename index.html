@@ -24,6 +24,22 @@
       </div>
       <button onclick="getInputValue()" type="button" id="search-btn" class="btn btn-primary mb-2">Search</button>
     </div>
+      <!--bonus content-->
+    </div>
+    <div id="spinner" class="justify-content-center p-2 d-none">
+      <div class="spinner-border text-info" role="status">
+      <span class="visually-hidden"> </span>
+      </div>
+    </div>
+    <div id="error" class="justify-content-center p-2 d-none">
+      <div  class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+        <div class="card-header text-center">We Are sorry</div>
+        <div class="card-body">
+          <p class="card-text">The image your searching is not available</p>
+        </div>
+      </div>
+
+    </div>
     <section class="images">
       <div class="justify-content-around align-items-center mt-3 gallery-header mb-2">
         <h3 class="head-title text-center">Select image for create slider</h3>
@@ -34,7 +50,6 @@
       </div>
       <div class="row gallery">
 
-      </div>
     </section>
     <!-- slider -->
     <div class="main">
