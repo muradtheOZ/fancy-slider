@@ -9,6 +9,10 @@ const durationField = document.getElementById('duration');
 // selected image 
 let sliders = [];
 
+//initial value
+let lastSetDuration = 0;
+
+
 
 // If this key doesn't work
 // Find the name in the url and go to their website
@@ -105,10 +109,9 @@ const createSlider = () => {
         sliderContainer.appendChild(item)
       })
       changeSlide(0)
-      timer = setInterval(function () {
-        slideIndex++;
-        changeSlide(slideIndex);
-      }, duration);
+      timer = setInterval(sliderMoverCallback, duration);
+      lastSetDuration = duration;
+
 
     }
     else {
@@ -129,13 +132,15 @@ const createSlider = () => {
       sliderContainer.appendChild(item)
     })
     changeSlide(0)
-    timer = setInterval(function () {
-      slideIndex++;
-      changeSlide(slideIndex);
-    }, duration);
+    timer = setInterval(sliderMoverCallback, duration);
+    lastSetDuration = duration;
 
   }
 
+}
+
+const sliderMoverCallback = () => {
+  changeSlide(++slideIndex);
 }
 
 // change slider index 
@@ -181,7 +186,7 @@ const triggerSearchBtn = inputField.addEventListener('keypress', function (event
 })
 
 durationField.addEventListener('keypress', function (event) {
-  
+
   if (event.key === 'Enter') {
     createSlider()
   }
@@ -207,10 +212,12 @@ const dangerInfo = (show) => {
 
 
 sliderContainer.addEventListener('mouseenter', e => {
-  e.target.style.display = "block";
-  
+  clearInterval(timer);
+  timer = undefined;
 });
 
 sliderContainer.addEventListener('mouseleave', e => {
-  sliderContainer.style.border = '6px solid #1e1743';
+  if (timer === undefined) { // if no animation is performing now then start it
+    timer = setInterval(sliderMoverCallback, lastSetDuration);
+  }
 });
