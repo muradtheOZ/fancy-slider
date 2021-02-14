@@ -54,6 +54,12 @@ img {
 .main {
   display: none;
 }
+/*bonus css style*/
+.img-effect:hover{
+  /* border: 2px solid #e66c09;
+  border-radius: 5px; */
+  background-color: #1e1743;
+}
 /*input arrow hide style*/
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
