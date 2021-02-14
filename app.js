@@ -5,6 +5,7 @@ const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 const inputField = document.getElementById('search');
+const durationField = document.getElementById('duration');
 // selected image 
 let sliders = [];
 
@@ -31,11 +32,11 @@ const showImages = (images) => {
 }
 
 const getImages = (query) => {
-    toggleSpinner();
-    dangerInfo(false);
-    
-    imagesArea.style.display = 'none';
-    const url = (`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`);
+  toggleSpinner();
+  dangerInfo(false);
+
+  imagesArea.style.display = 'none';
+  const url = (`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`);
 
   fetch(url)
     .then(response => response.json())
@@ -50,8 +51,6 @@ const getImages = (query) => {
         toggleSpinner();
 
       }
-
-
 
     })
     .catch(err => dangerInfo(true))
@@ -181,24 +180,37 @@ const triggerSearchBtn = inputField.addEventListener('keypress', function (event
 
 })
 
-sliderBtn.addEventListener('click', function () {
-  createSlider()
+durationField.addEventListener('keypress', function (event) {
+  
+  if (event.key === 'Enter') {
+    createSlider()
+  }
 })
 
 //Bonus Marking javascript
 const toggleSpinner = () => {
   const spinner = document.getElementById('spinner');
-    spinner.classList.toggle('d-flex');
+  spinner.classList.toggle('d-flex');
 }
 
 const dangerInfo = (show) => {
   const error = document.getElementById('error');
 
- if (show) {
+  if (show) {
     error.classList.add('d-flex');
   }
   else {
     error.classList.remove('d-flex');
   }
- 
+
 }
+
+
+sliderContainer.addEventListener('mouseenter', e => {
+  e.target.style.display = "block";
+  
+});
+
+sliderContainer.addEventListener('mouseleave', e => {
+  sliderContainer.style.border = '6px solid #1e1743';
+});
